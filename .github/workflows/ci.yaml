@@ -31,6 +31,7 @@ jobs:
           pip install pytest
           pytest
         env:
+          ENV: test
           CI: true
 
       - name: Build Docker image (validation only)
@@ -116,4 +117,3 @@ jobs:
             --head $BRANCH \
             --title "chore: update image tag to ${{ steps.version.outputs.tag }}" \
             --body "Automated PR: update container image to \`${{ secrets.DOCKER_USERNAME }}/fastapi-app:${{ steps.version.outputs.tag }}\`"
-            
