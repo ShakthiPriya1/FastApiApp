@@ -90,7 +90,7 @@ jobs:
       - name: Checkout deploy repository
         uses: actions/checkout@v4
         with:
-          repository: ShakthiPriya1/KubernetesTraining1-Deploy
+          repository: ShakthiPriya1/KubernetesTraining2-Deploy
           token: ${{ secrets.GH_PAT }}
           path: deploy-repo
 
@@ -111,7 +111,7 @@ jobs:
           git commit -m "chore: update image to ${{ steps.version.outputs.tag }}"
           git push origin $BRANCH
           gh pr create \
-            --repo ShakthiPriya1/KubernetesTraining1-Deploy \
+            --repo ShakthiPriya1/KubernetesTraining2-Deploy \
             --base main \
             --head $BRANCH \
             --title "chore: update image tag to ${{ steps.version.outputs.tag }}" \
