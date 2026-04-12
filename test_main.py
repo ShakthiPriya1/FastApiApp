@@ -9,7 +9,7 @@ class TestAPI:
     def test_home(self):
         response = client.get("/")
         assert response.status_code == 200
-        assert response.json() == {"message": "Hello World"}
+        assert response.json() == {"message": "Hello Shakthi!!"}
 
     def test_greet_default(self):
         response = client.get("/greet")
