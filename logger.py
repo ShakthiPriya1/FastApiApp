@@ -20,7 +20,7 @@ if os.getenv("ENV") != "test":
     loki_handler = LokiHandler(
         url="http://loki-gateway.loki.svc.cluster.local/loki/api/v1/push",
         tags={
-            "service": "order-services",
+            "service": "fast-api-services",
             "env": "development"
         },
         headers={
