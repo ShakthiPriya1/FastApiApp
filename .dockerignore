@@ -1,0 +1,36 @@
+# Git
+.git
+.gitignore
+
+# Virtual environments
+venv/
+env/
+*.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment variables
+.env
+
+# VS Code / IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Tests (optional)
+tests/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS files
+.DS_Store
+
+# Docker files (optional)
+Dockerfile
+.dockerignore
