@@ -21,7 +21,7 @@ if ENV == "prod":
         from logging_loki import LokiHandler
 
         loki_handler = LokiHandler(
-            url="http://loki-gateway.loki.svc.cluster.local/",
+            url="http://loki-gateway.loki.svc.cluster.local/loki/api/v1/push",
             tags={
                 "service": "fast-api-services",
                 "env": "prod"
