@@ -1,36 +1,47 @@
 import logging
 import os
 
-logger = logging.getLogger("fastapi-app")
-logger.setLevel(logging.INFO)
+ENV = os.getenv("ENV", "dev")
 
 formatter = logging.Formatter(
     '%(asctime)s - %(levelname)s - %(message)s'
 )
 
-# Console handler (always)
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(formatter)
-logger.addHandler(console_handler)
+def create_logger(service_name: str):
+    logger = logging.getLogger(service_name)
+    logger.setLevel(logging.INFO)
 
-ENV = os.getenv("ENV", "dev")
+    # Avoid duplicate handlers
+    if logger.handlers:
+        return logger
 
-# Only enable Loki in prod
-if ENV == "prod":
-    try:
-        from logging_loki import LokiHandler
+    # Console handler
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)
 
-        loki_handler = LokiHandler(
-            url="http://loki-gateway.loki.svc.cluster.local/loki/api/v1/push",
-            tags={
-                "service": "fast-api-services",
-                "env": "prod"
-            },
-            version="1",
-        )
+    # Loki only in prod
+    if ENV == "prod":
+        try:
+            from logging_loki import LokiHandler
 
-        loki_handler.setFormatter(formatter)
-        logger.addHandler(loki_handler)
+            loki_handler = LokiHandler(
+                url="http://loki-gateway.loki.svc.cluster.local/loki/api/v1/push",
+                tags={
+                    "service": service_name,
+                    "env": ENV
+                },
+                version="1",
+            )
+            loki_handler.setFormatter(formatter)
+            logger.addHandler(loki_handler)
 
-    except Exception as e:
-        logger.error(f"Failed to initialize Loki handler: {e}")
+        except Exception as e:
+            logger.error(f"Loki init failed: {e}")
+
+    return logger
+
+
+# Create two "services"
+fast_api_logger = create_logger("fast-api-service")
+math_logger = create_logger("math-service")
